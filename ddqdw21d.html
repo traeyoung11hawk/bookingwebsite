@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusPod™ — Book Your Study Pod</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #F4A0B0;
+    --lilac: #C8A6D6;
+    --cream: #F5F0E8;
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --accent: #E8D44D;
+    --green: #4CAF6E;
+    --red: #E84D4D;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--black);
+    border-bottom: 1px solid #222;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .logo-mark {
+    width: 38px; height: 38px;
+    border: 2.5px solid var(--pink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--pink);
+    letter-spacing: 1px;
+  }
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+  .logo-text span { color: var(--pink); }
+
+  nav { display: flex; gap: 32px; align-items: center; }
+  nav a {
+    font-size: 13px; font-weight: 500; letter-spacing: 1.5px;
+    color: #888; text-decoration: none; text-transform: uppercase;
+    transition: color .2s;
+  }
+  nav a:hover { color: var(--white); }
+
+  .nav-badge {
+    background: var(--pink); color: var(--black);
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    padding: 6px 16px; border-radius: 100px;
+    text-transform: uppercase; cursor: default;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 420px;
+  }
+  .hero-left {
+    background: var(--pink);
+    padding: 64px 56px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-left::after {
+    content: '↗';
+    position: absolute; bottom: 32px; right: 36px;
+    font-size: 80px; font-family: 'Bebas Neue', sans-serif;
+    color: rgba(0,0,0,.12); line-height: 1;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--black); opacity: .6; margin-bottom: 18px;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 6vw, 80px);
+    line-height: .95; color: var(--black);
+    margin-bottom: 24px;
+  }
+  .hero-sub {
+    font-size: 15px; line-height: 1.65; color: var(--black);
+    opacity: .8; max-width: 340px;
+  }
+
+  .hero-right {
+    background: var(--black);
+    padding: 64px 56px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-left: 1px solid #222;
+  }
+  .hero-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px; color: var(--white); line-height: 1;
+  }
+  .hero-stat span { color: var(--pink); }
+  .hero-stat-label {
+    font-size: 13px; color: #666; letter-spacing: 1px;
+    text-transform: uppercase; margin-top: 8px; margin-bottom: 40px;
+  }
+  .features-list { display: flex; flex-direction: column; gap: 14px; }
+  .feature-item {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px; color: #aaa;
+  }
+  .feature-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pink); flex-shrink: 0;
+  }
+
+  /* ── BOOKING SECTION ── */
+  .booking-section {
+    padding: 72px 48px;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px; border-bottom: 1px solid #222; padding-bottom: 32px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px; line-height: 1;
+  }
+  .section-title span { color: var(--pink); }
+  .section-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: #555; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── CALENDAR ── */
+  .calendar-wrap {
+    background: #0e0e0e; border: 1px solid #222; border-radius: 16px;
+    padding: 28px 32px; margin-bottom: 40px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .cal-nav {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cal-month {
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+    letter-spacing: 2px; color: var(--white);
+  }
+  .cal-arrow {
+    background: #111; border: 1px solid #2a2a2a; color: #888;
+    width: 38px; height: 38px; border-radius: 8px; cursor: pointer;
+    font-size: 18px; display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .cal-arrow:hover { border-color: var(--pink); color: var(--pink); }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  }
+  .cal-dow {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: #444; text-align: center; padding: 4px 0;
+  }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;
+    color: #888; transition: all .15s; border: 1px solid transparent;
+  }
+  .cal-day:hover:not(.cal-empty):not(.cal-past) { border-color: var(--pink); color: var(--white); }
+  .cal-day.cal-empty { cursor: default; }
+  .cal-day.cal-past { color: #2a2a2a; cursor: default; }
+  .cal-day.cal-today { border-color: #333; color: var(--white); }
+  .cal-day.cal-selected {
+    background: var(--pink); color: var(--black); border-color: var(--pink); font-weight: 700;
+  }
+  .cal-day.cal-weekend { color: #555; }
+  .cal-day.cal-weekend:hover:not(.cal-past) { color: var(--white); }
+  .cal-selected-label {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: #555; letter-spacing: 1px; text-transform: uppercase;
+    border-top: 1px solid #1a1a1a; padding-top: 16px;
+  }
+  .cal-selected-label span { color: var(--pink); }
+
+  /* Pod Grid */
+  .pod-grid {
+    display: grid;
+    grid-template-columns: 180px repeat(8, 1fr);
+    gap: 0;
+    border: 1px solid #222;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .grid-corner {
+    background: #0e0e0e;
+    border-right: 1px solid #222;
+    border-bottom: 1px solid #222;
+    padding: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .grid-corner-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px;
+  }
+
+  .pod-header {
+    background: #0e0e0e;
+    border-right: 1px solid #1a1a1a;
+    border-bottom: 1px solid #222;
+    padding: 16px 8px;
+    text-align: center;
+  }
+  .pod-header:last-child { border-right: none; }
+  .pod-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; color: var(--white); margin-bottom: 2px;
+  }
+  .pod-label {
+    font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .period-label {
+    background: #0c0c0c;
+    border-right: 1px solid #222;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 16px 20px;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  }
+  .period-label:last-child { border-bottom: none; }
+  .period-name {
+    font-weight: 600; font-size: 13px; color: var(--white);
+  }
+  .period-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: #555; letter-spacing: .5px;
+  }
+  .period-price {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    margin-top: 4px;
+  }
+  .period-break { background: #0c0c10; }
+  .period-break .period-name { color: #C8A6D6; }
+
+  .slot {
+    border-right: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .18s;
+    min-height: 68px; position: relative;
+    background: #0d0d0d;
+  }
+  .slot:last-child { border-right: none; }
+  .slot.available:hover { background: rgba(244,160,176,.12); }
+  .slot.booked {
+    background: #111; cursor: default;
+  }
+  .slot.selected {
+    background: rgba(244,160,176,.25);
+  }
+  .slot.break-slot {
+    background: rgba(76,175,110,.04);
+    cursor: default;
+  }
+
+  .slot-inner {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .slot-status {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .slot.available .slot-status { background: var(--green); }
+  .slot.booked .slot-status { background: var(--red); }
+  .slot.selected .slot-status { background: var(--pink); }
+  .slot.break-slot .slot-status { background: #2a2a2a; }
+
+  .slot-text {
+    font-size: 9px; letter-spacing: .5px; text-transform: uppercase;
+    font-family: 'DM Mono', monospace; color: #444;
+  }
+  .slot.available .slot-text { color: #555; }
+  .slot.available:hover .slot-text { color: var(--pink); }
+  .slot.booked .slot-text { color: #333; }
+  .slot.selected .slot-text { color: var(--pink); }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 32px; margin-top: 24px; align-items: center;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #666;
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* Cart / Confirm Panel */
+  .confirm-panel {
+    margin-top: 48px;
+    background: #0e0e0e; border: 1px solid #222; border-radius: 16px;
+    padding: 40px; display: none;
+  }
+  .confirm-panel.visible { display: block; }
+
+  .confirm-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; margin-bottom: 24px;
+  }
+  .confirm-title span { color: var(--pink); }
+
+  .booking-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .booking-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #111; border: 1px solid #1e1e1e; border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .booking-item-info { display: flex; flex-direction: column; gap: 3px; }
+  .booking-item-name { font-weight: 600; font-size: 14px; }
+  .booking-item-detail {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #555;
+  }
+  .booking-item-price {
+    font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--accent);
+  }
+  .booking-remove {
+    background: none; border: none; color: #444; cursor: pointer;
+    font-size: 18px; padding: 4px 8px; border-radius: 6px;
+    transition: all .15s; margin-left: 12px;
+  }
+  .booking-remove:hover { color: var(--red); background: rgba(232,77,77,.1); }
+
+  .confirm-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid #1e1e1e; padding-top: 28px;
+  }
+  .total-block { display: flex; flex-direction: column; gap: 4px; }
+  .total-label {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: #555; text-transform: uppercase; letter-spacing: 2px;
+  }
+  .total-amount {
+    font-family: 'Bebas Neue', sans-serif; font-size: 52px;
+    line-height: 1; color: var(--white);
+  }
+  .total-amount span { color: var(--accent); }
+
+  /* Form */
+  .booking-form { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+  .form-row { display: flex; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .form-label {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: #555; text-transform: uppercase; letter-spacing: 2px;
+  }
+  .form-input {
+    background: #111; border: 1px solid #2a2a2a; color: var(--white);
+    border-radius: 10px; padding: 14px 18px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; outline: none;
+    transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--pink); }
+  .form-input::placeholder { color: #333; }
+
+  .confirm-btn {
+    background: var(--pink); color: var(--black);
+    border: none; font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 2px;
+    padding: 18px 48px; border-radius: 12px; cursor: pointer;
+    transition: all .2s; display: flex; align-items: center; gap: 12px;
+  }
+  .confirm-btn:hover { background: #f0839a; transform: translateY(-2px); }
+  .confirm-btn:active { transform: translateY(0); }
+  .confirm-btn-arrow { font-size: 24px; }
+
+  /* Empty state */
+  .empty-cart {
+    text-align: center; padding: 48px; color: #333;
+    font-family: 'DM Mono', monospace; font-size: 13px;
+  }
+
+  /* Success Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #0e0e0e; border: 1px solid #2a2a2a;
+    border-radius: 20px; padding: 56px 64px;
+    max-width: 520px; width: 90%; text-align: center;
+    transform: translateY(24px); transition: transform .3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(76,175,110,.15); border: 2px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 28px;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px; color: var(--white); margin-bottom: 12px;
+  }
+  .modal-title span { color: var(--green); }
+  .modal-body { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+  .modal-ref {
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    background: #111; border: 1px solid #2a2a2a;
+    border-radius: 8px; padding: 14px 20px; display: inline-block;
+    color: var(--accent); letter-spacing: 3px; margin-bottom: 32px;
+  }
+  .modal-close {
+    background: var(--pink); color: var(--black); border: none;
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px;
+    padding: 14px 40px; border-radius: 10px; cursor: pointer;
+    transition: background .2s;
+  }
+  .modal-close:hover { background: #f0839a; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid #1a1a1a; padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: #333; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .footer-right {
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px;
+    color: #222; letter-spacing: 3px;
+  }
+
+  /* Ticker strip */
+  .ticker {
+    background: var(--pink); padding: 10px 0; overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex; gap: 64px; animation: ticker 18s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px;
+    letter-spacing: 3px; color: var(--black); opacity: .7;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    header { padding: 16px 24px; }
+    nav { gap: 16px; }
+    nav a { display: none; }
+    .booking-section { padding: 48px 24px; }
+    .pod-grid { overflow-x: auto; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">FP</div>
+    <div class="logo-text">FOCUS<span>POD</span>™</div>
+  </div>
+  <nav>
+    <a href="#">About</a>
+    <a href="#">My Bookings</a>
+    <a href="#">Help</a>
+    <span class="nav-badge">Tempe High School</span>
+  </nav>
+</header>
+
+<!-- Ticker -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item">QUIET ZONE</span>
+    <span class="ticker-item">NOISE CANCELLING HEADPHONES INCLUDED</span>
+    <span class="ticker-item">POWER OUTLET AVAILABLE</span>
+    <span class="ticker-item">$3 PER PERIOD</span>
+    <span class="ticker-item">BOOK YOUR FOCUS POD TODAY</span>
+    <span class="ticker-item">STUDY SMARTER, NOT HARDER</span>
+    <span class="ticker-item">QUIET ZONE</span>
+    <span class="ticker-item">NOISE CANCELLING HEADPHONES INCLUDED</span>
+    <span class="ticker-item">POWER OUTLET AVAILABLE</span>
+    <span class="ticker-item">$3 PER PERIOD</span>
+    <span class="ticker-item">BOOK YOUR FOCUS POD TODAY</span>
+    <span class="ticker-item">STUDY SMARTER, NOT HARDER</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Reserve your space — 2026</div>
+    <div class="hero-title">BOOK YOUR FOCUS<br>POD</div>
+    <div class="hero-sub">Secure a private, distraction-free study environment for your next revision session. Each pod includes premium noise-cancelling headphones and a dedicated power outlet.</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">$<span>3</span></div>
+    <div class="hero-stat-label">Per period booking</div>
+    <div class="features-list">
+      <div class="feature-item"><div class="feature-dot"></div>Noise-cancelling headphones included</div>
+      <div class="feature-item"><div class="feature-dot"></div>Built-in power outlet for all devices</div>
+      <div class="feature-item"><div class="feature-dot"></div>Enclosed walls for visual privacy</div>
+      <div class="feature-item"><div class="feature-dot"></div>Available to all year groups</div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Section -->
+<div class="booking-section">
+  <div class="section-header">
+    <div class="section-title">SELECT A<br><span>PERIOD & POD</span></div>
+    <div class="section-note" id="sectionNote">Pick any date below</div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="calendar-wrap">
+    <div class="cal-nav">
+      <button class="cal-arrow" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month" id="calMonth"></div>
+      <button class="cal-arrow" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-selected-label" id="calLabel">Select a date above to view availability</div>
+  </div>
+
+  <!-- Pod Grid -->
+  <div class="pod-grid" id="podGrid"></div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Available</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Booked</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>Selected</div>
+    <div class="legend-item" style="color:#555;font-size:11px;font-family:'DM Mono',monospace;letter-spacing:1px">★ TUESDAY HAS A DIFFERENT TIMETABLE</div>
+  </div>
+
+  <!-- Confirm Panel -->
+  <div class="confirm-panel" id="confirmPanel">
+    <div class="confirm-title">YOUR <span>BOOKING</span></div>
+
+    <div class="booking-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" placeholder="e.g. Alex" id="fname">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" placeholder="e.g. Smith" id="lname">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Student ID</label>
+          <input class="form-input" type="text" placeholder="e.g. 20241234" id="sid">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year Group</label>
+          <input class="form-input" type="text" placeholder="e.g. Year 10" id="year">
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-items" id="bookingItems"></div>
+
+    <div class="confirm-footer">
+      <div class="total-block">
+        <div class="total-label">Total Due</div>
+        <div class="total-amount" id="totalAmount">$<span>0</span></div>
+      </div>
+      <button class="confirm-btn" onclick="confirmBooking()">
+        CONFIRM BOOKING <span class="confirm-btn-arrow">↗</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">© 2026 FocusPod™ Solutions — Tempe High School</div>
+  <div class="footer-right">FOCUS POD SOLUTIONS™</div>
+</footer>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">✓</div>
+    <div class="modal-title">BOOKING <span>CONFIRMED</span></div>
+    <div class="modal-body">Your FocusPod has been reserved. Please pay at the library desk before your session. Show this confirmation code to the librarian.</div>
+    <div class="modal-ref" id="modalRef">FP-000000</div>
+    <button class="modal-close" onclick="closeModal()">DONE — CLOSE</button>
+  </div>
+</div>
+
+<script>
+  // ── TIMETABLES ──
+  const PERIODS_NORMAL = [
+    { id:'p1',  name:'Period 1', time:'8:45 – 9:40 AM',   price:3 },
+    { id:'p2',  name:'Period 2', time:'9:40 – 10:35 AM',  price:3 },
+    { id:'rec', name:'Recess',   time:'10:35 – 11:00 AM', price:3 },
+    { id:'p3',  name:'Period 3', time:'11:00 – 11:55 AM', price:3 },
+    { id:'p4',  name:'Period 4', time:'11:55 AM – 12:50', price:3 },
+    { id:'lun', name:'Lunch',    time:'12:50 – 1:20 PM',  price:3 },
+    { id:'p5',  name:'Period 5', time:'1:20 – 2:15 PM',   price:3 },
+    { id:'p6',  name:'Period 6', time:'2:15 – 3:05 PM',   price:3 },
+  ];
+
+  const PERIODS_TUESDAY = [
+    { id:'p1',  name:'Period 1', time:'8:45 – 9:40 AM',   price:3 },
+    { id:'p2',  name:'Period 2', time:'9:40 – 10:35 AM',  price:3 },
+    { id:'rec', name:'Recess',   time:'10:35 – 11:00 AM', price:3 },
+    { id:'p3',  name:'Period 3', time:'11:00 – 11:55 AM', price:3 },
+    { id:'lun', name:'Lunch',    time:'11:55 AM – 12:25', price:3 },
+    { id:'p4',  name:'Period 4', time:'12:25 – 1:20 PM',  price:3 },
+    { id:'p5',  name:'Period 5', time:'1:20 – 2:15 PM',   price:3 },
+  ];
+
+  const PODS = [1,2,3,4,5,6,7,8];
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DOW = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+  // State
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  let calYear = today.getFullYear();
+  let calMonth = today.getMonth();
+  let selectedDate = null; // Date object
+  let selectedSlots = {};  // key: `${dateStr}-${periodId}-${pod}`
+  let bookedSlots = {};    // same key format, seeded fake data
+
+  function dateKey(d) {
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  }
+
+  function isTuesday(d) { return d.getDay() === 2; }
+
+  function getPeriodsForDate(d) {
+    return isTuesday(d) ? PERIODS_TUESDAY : PERIODS_NORMAL;
+  }
+
+  // Seed fake bookings across several dates around today
+  function seedBookings() {
+    for (let offset = 0; offset < 30; offset++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + offset);
+      if (d.getDay() === 0 || d.getDay() === 6) continue;
+      const periods = getPeriodsForDate(d);
+      const dk = dateKey(d);
+      periods.forEach(p => {
+        PODS.forEach(pod => {
+          if (Math.random() < 0.3) bookedSlots[`${dk}-${p.id}-${pod}`] = true;
+        });
+      });
+    }
+  }
+  seedBookings();
+
+  // ── CALENDAR ──
+  function changeMonth(dir) {
+    calMonth += dir;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    if (calMonth < 0)  { calMonth = 11; calYear--; }
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    document.getElementById('calMonth').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    // Day-of-week headers
+    DOW.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-dow';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    // Empty cells
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day cal-empty';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(calYear, calMonth, d);
+      const isToday = date.getTime() === today.getTime();
+      const isPast  = date < today;
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+      const isSelected = selectedDate && dateKey(date) === dateKey(selectedDate);
+
+      const el = document.createElement('div');
+      let cls = 'cal-day';
+      if (isSelected) cls += ' cal-selected';
+      else if (isPast) cls += ' cal-past';
+      else if (isToday) cls += ' cal-today';
+      if (isWeekend) cls += ' cal-weekend';
+      el.className = cls;
+      el.textContent = d;
+
+      if (!isPast) {
+        el.onclick = () => selectDate(date);
+      }
+      grid.appendChild(el);
+    }
+
+    // Update label
+    const label = document.getElementById('calLabel');
+    if (selectedDate) {
+      const dow = DOW[selectedDate.getDay()];
+      const isTue = isTuesday(selectedDate);
+      label.innerHTML = `Viewing: <span>${dow} ${selectedDate.getDate()} ${MONTH_NAMES[selectedDate.getMonth()]} ${selectedDate.getFullYear()}</span>${isTue ? ' <span style="color:var(--lilac);margin-left:8px">★ Tuesday Timetable</span>' : ''}`;
+    } else {
+      label.innerHTML = 'Select a date above to view availability';
+    }
+  }
+
+  function selectDate(date) {
+    selectedDate = date;
+    const dow = DOW[date.getDay()];
+    const isTue = isTuesday(date);
+    document.getElementById('sectionNote').textContent =
+      `${dow} ${date.getDate()} ${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}${isTue ? ' — Tuesday Timetable' : ''}`;
+    renderCalendar();
+    renderGrid();
+  }
+
+  // ── GRID ──
+  function renderGrid() {
+    const grid = document.getElementById('podGrid');
+    grid.innerHTML = '';
+
+    if (!selectedDate) {
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:48px;text-align:center;font-family:\'DM Mono\',monospace;font-size:13px;color:#333;letter-spacing:1px">SELECT A DATE TO VIEW AVAILABILITY</div>';
+      return;
+    }
+
+    const periods = getPeriodsForDate(selectedDate);
+    const dk = dateKey(selectedDate);
+
+    // Corner
+    const corner = document.createElement('div');
+    corner.className = 'grid-corner';
+    corner.innerHTML = '<span class="grid-corner-text">Period / Pod</span>';
+    grid.appendChild(corner);
+
+    // Pod headers
+    PODS.forEach(pod => {
+      const h = document.createElement('div');
+      h.className = 'pod-header';
+      h.innerHTML = `<div class="pod-number">0${pod}</div><div class="pod-label">Pod</div>`;
+      grid.appendChild(h);
+    });
+
+    // Rows
+    periods.forEach(period => {
+      const isBreakStyle = period.id === 'rec' || period.id === 'lun';
+      const label = document.createElement('div');
+      label.className = 'period-label' + (isBreakStyle ? ' period-break' : '');
+      label.innerHTML = `
+        <div class="period-name">${period.name}</div>
+        <div class="period-time">${period.time}</div>
+        <div class="period-price">$3.00</div>
+      `;
+      grid.appendChild(label);
+
+      PODS.forEach(pod => {
+        const key = `${dk}-${period.id}-${pod}`;
+        const slot = document.createElement('div');
+
+        if (bookedSlots[key]) {
+          slot.className = 'slot booked';
+          slot.innerHTML = `<div class="slot-inner"><div class="slot-status"></div><div class="slot-text">BOOKED</div></div>`;
+        } else if (selectedSlots[key]) {
+          slot.className = 'slot selected';
+          slot.innerHTML = `<div class="slot-inner"><div class="slot-status"></div><div class="slot-text">SELECTED</div></div>`;
+          slot.onclick = () => toggleSlot(key, period, pod);
+        } else {
+          slot.className = 'slot available';
+          slot.innerHTML = `<div class="slot-inner"><div class="slot-status"></div><div class="slot-text">OPEN</div></div>`;
+          slot.onclick = () => toggleSlot(key, period, pod);
+        }
+        grid.appendChild(slot);
+      });
+    });
+  }
+
+  function toggleSlot(key, period, pod) {
+    if (selectedSlots[key]) delete selectedSlots[key];
+    else selectedSlots[key] = { date: new Date(selectedDate), period, pod };
+    renderGrid();
+    renderCart();
+  }
+
+  // ── CART ──
+  function renderCart() {
+    const panel = document.getElementById('confirmPanel');
+    const items = document.getElementById('bookingItems');
+    const total = document.getElementById('totalAmount');
+    const entries = Object.entries(selectedSlots);
+
+    if (entries.length === 0) { panel.classList.remove('visible'); return; }
+    panel.classList.add('visible');
+
+    items.innerHTML = '';
+    let sum = 0;
+    entries.forEach(([key, val]) => {
+      sum += val.period.price;
+      const d = val.date;
+      const dateStr = `${DOW[d.getDay()]} ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+      const item = document.createElement('div');
+      item.className = 'booking-item';
+      item.innerHTML = `
+        <div class="booking-item-info">
+          <div class="booking-item-name">${val.period.name} — Pod 0${val.pod}</div>
+          <div class="booking-item-detail">${dateStr} · ${val.period.time}</div>
+        </div>
+        <div style="display:flex;align-items:center">
+          <div class="booking-item-price">$${val.period.price}</div>
+          <button class="booking-remove" onclick="removeSlot('${key}')">×</button>
+        </div>
+      `;
+      items.appendChild(item);
+    });
+    total.innerHTML = `$<span>${sum}</span>`;
+  }
+
+  function removeSlot(key) {
+    delete selectedSlots[key];
+    renderGrid();
+    renderCart();
+  }
+
+  // ── CONFIRM ──
+  function confirmBooking() {
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const sid   = document.getElementById('sid').value.trim();
+
+    if (!fname || !lname || !sid) {
+      document.querySelectorAll('.form-input').forEach(i => {
+        i.style.borderColor = i.value.trim() ? '#2a2a2a' : 'var(--red)';
+      });
+      return;
+    }
+
+    Object.keys(selectedSlots).forEach(key => { bookedSlots[key] = true; });
+    selectedSlots = {};
+
+    const ref = 'FP-' + Math.floor(100000 + Math.random()*900000);
+    document.getElementById('modalRef').textContent = ref;
+    document.getElementById('modalOverlay').classList.add('open');
+    renderGrid();
+    renderCart();
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    ['fname','lname','sid','year'].forEach(id => document.getElementById(id).value = '');
+  }
+
+  // ── INIT ──
+  renderCalendar();
+  renderGrid();
+</script>
+</body>
+</html>
